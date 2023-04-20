@@ -1,0 +1,33 @@
+_schema-version: "3.2"
+ID: pls-approuter
+version: 0.0.1
+modules:
+- name: pls-approuter-approuter
+  type: approuter.nodejs
+  path: pls-approuter-approuter
+  requires:
+  - name: pls-proxy
+  - name: uaa_pls-approuter
+  - name: dest_privatelink-proxy
+  parameters:
+    disk-quota: 256M
+    memory: 256M
+resources:
+- name: uaa_pls-approuter
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: uaa_pls-approuter-xsuaa-service
+    service-plan: application
+- name: pls-proxy
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: privatelink
+    service-name: PrivateLink
+    service-plan: standard
+- name: dest_privatelink-proxy
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: destination
+    service-plan: lite
